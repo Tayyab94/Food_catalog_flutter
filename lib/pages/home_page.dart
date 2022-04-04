@@ -60,11 +60,35 @@ class _HomepageState extends State<Homepage> {
         padding: const EdgeInsets.all(16.0),
         child: (CatalogModel.productsList != null ||
                 CatalogModel.productsList.isNotEmpty)
-            ? ListView.builder(
+            ? GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 16.0,
+                    mainAxisSpacing: 16.0),
+                itemBuilder: (context, index) {
+                  final item = CatalogModel.productsList[index];
+                  return Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Card(
+                        clipBehavior: Clip.antiAlias,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: GridTile(
+                          child: Image.network(item.image),
+                          header: Container(
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(color: Colors.deepPurple),
+                            child: Text(
+                              item.name,
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                          footer: Text(item.price.toString()),
+                        )),
+                  );
+                },
                 itemCount: CatalogModel.productsList.length,
-                itemBuilder: (context, index) => ItemWidget(
-                  item: CatalogModel.productsList[index],
-                ),
               )
             : Container(
                 child: CircularProgressIndicator(),
